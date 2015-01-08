@@ -26,6 +26,9 @@ var defaultConfig = {
             './src/manifest.webapp',
             './src/img/**'
         ]
+    },
+    browserSync: {
+        https: true
     }
 };
 
