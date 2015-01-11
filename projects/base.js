@@ -4,6 +4,7 @@
 var del = require('del');
 var runSequence = require('run-sequence');
 var clone = require('lodash-node').clone;
+var forEach = require('lodash-node').forEach;
 
 var htmlTasks = require('../tasks/html');
 var sassTasks = require('../tasks/sass');
@@ -13,6 +14,14 @@ var browserSyncTask = require('../tasks/browser-sync');
 var useminTask = require('../tasks/usemin');
 
 module.exports = function init(gulp, config) {
+
+    gulp.task('user-tasks', function() {
+        if (config.tasks) {
+            forEach(config.tasks, function(t) {
+                t.call(null, gulp, config);
+            });
+        }
+    });
 
     gulp.task('build-app', function() {
         var bundler = browserifyTasks.getBundler(config);
@@ -35,13 +44,15 @@ module.exports = function init(gulp, config) {
         'build-app',
         'build-html',
         'build-sass',
-        'build-conf'
+        'build-conf',
+        'user-tasks'
     ]);
 
     gulp.task('build-all-except-app', [
         'build-html',
         'build-sass',
-        'build-conf'
+        'build-conf',
+        'user-tasks'
     ]);
 
     gulp.task('watch-app', function() {
