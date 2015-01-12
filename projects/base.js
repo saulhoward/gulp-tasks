@@ -23,6 +23,10 @@ module.exports = function init(gulp, config) {
         }
     };
 
+    gulp.task('user-tasks', function() {
+        userTasks();
+    });
+
     gulp.task('build-app', function() {
         var bundler = browserifyTasks.getBundler(config);
         return browserifyTasks.bundle(bundler, config);
@@ -72,7 +76,7 @@ module.exports = function init(gulp, config) {
         runsequence = runSequence.use(gulp);
         runsequence(
             'build-all-except-app',
-            [ 'watch-app', 'watch-sass'],
+            ['user-tasks', 'watch-app', 'watch-sass'],
             function() {
                 userTasks();
             }
