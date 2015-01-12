@@ -15,13 +15,13 @@ var useminTask = require('../tasks/usemin');
 
 module.exports = function init(gulp, config) {
 
-    gulp.task('user-tasks', function() {
+    var userTasks = function() {
         if (config.tasks) {
             forEach(config.tasks, function(t) {
                 t.call(null, gulp, config);
             });
         }
-    });
+    };
 
     gulp.task('build-app', function() {
         var bundler = browserifyTasks.getBundler(config);
@@ -44,15 +44,13 @@ module.exports = function init(gulp, config) {
         'build-app',
         'build-html',
         'build-sass',
-        'build-conf',
-        'user-tasks'
+        'build-conf'
     ]);
 
     gulp.task('build-all-except-app', [
         'build-html',
         'build-sass',
-        'build-conf',
-        'user-tasks'
+        'build-conf'
     ]);
 
     gulp.task('watch-app', function() {
@@ -66,12 +64,18 @@ module.exports = function init(gulp, config) {
         return sassTasks.watch(config);
     });
 
+    gulp.task('use-min', function() {
+        return useminTask(config);
+    });
+
     gulp.task('watch', function(callback) {
-        runSequence = runSequence.use(gulp);
-        runSequence(
+        runsequence = runSequence.use(gulp);
+        runsequence(
             'build-all-except-app',
-            [ 'watch-app', 'watch-sass' ],
-            callback
+            [ 'watch-app', 'watch-sass'],
+            function() {
+                userTasks();
+            }
         );
     });
 
@@ -81,8 +85,15 @@ module.exports = function init(gulp, config) {
 
     gulp.task('start', ['server', 'watch']);
 
-    gulp.task('build', ['build-all'], function() {
-        return useminTask(config);
+    gulp.task('build', function() {
+        runsequence = runSequence.use(gulp);
+        runsequence(
+            'build-all',
+            'use-min',
+            function() {
+                userTasks();
+            }
+        );
     });
 
     gulp.task('clean', function() {
