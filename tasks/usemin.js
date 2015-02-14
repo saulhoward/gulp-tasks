@@ -34,5 +34,5 @@ module.exports = function(config) {
             js: [rev()]
         }))
         .pipe(gulp.dest(config.dest))
-        .pipe(removeOriginals(config.dest));
+        // .pipe(removeOriginals(config.dest));
 }
