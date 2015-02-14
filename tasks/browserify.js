@@ -1,7 +1,7 @@
 var browserify = require('browserify');
 var watchify = require('watchify');
 
-var reactify = require('reactify');
+var to5ify = require('6to5ify');
 var envify = require('envify');
 
 var stringify = require('stringify');
@@ -31,15 +31,17 @@ module.exports = {
 
         var transforms = [
             {
-                opts: reactify,
-                tr: { es6: true }
+                opts: to5ify,
+                tr: {
+                    experimental: true // object spread support
+                }
             },
             {
                 opts: envify,
                 tr: { NODE_ENV: 'development' }
             },
             {
-                opts: stringify(['.html']),
+                opts: stringify(['.html', '.svg']),
                 tr: null
             }
         ];
