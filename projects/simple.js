@@ -28,7 +28,8 @@ var defaultConfig = {
         ]
     },
     browserSync: {
-        https: true
+        https: true,
+        rewriteToRoot: true
     }
 };
 
