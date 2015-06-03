@@ -8,7 +8,7 @@
     "url": "https://github.com/saulhoward/gulp-common.git"
   },
   "author": "saulhoward",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/saulhoward/gulp-tasks/issues"
   },
